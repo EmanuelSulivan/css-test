@@ -1,9 +1,26 @@
+* {
+  box-sizing: border-box;
+}
+
 html,
 body {
+  margin: 0px;
   height: 100%;
 }
 
+#root,
 .App {
-  text-align: center;
   height: 100%;
+}
+
+.red {
+  border: 1px solid red;
+}
+
+.blue {
+  border: 1px solid blue;
+}
+
+.green {
+  border: 1px solid green;
 }
