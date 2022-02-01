@@ -7,6 +7,7 @@ import { User } from "../../interfaces/user.interfaces";
 interface Props {
   user: User;
 }
+
 export const UserItem = ({ user }: Props) => {
   return (
     <TableRow key={`row-${user.id}`}>
@@ -14,12 +15,12 @@ export const UserItem = ({ user }: Props) => {
         <Avatar src="https://i.pinimg.com/280x280_RS/2e/45/66/2e4566fd829bcf9eb11ccdb5f252b02f.jpg" />
       </TableCell>
       <TableCell component="th" scope="row">
-        {user.image}
+        {user.profilePicture}
       </TableCell>
       <TableCell component="th" scope="row">
         <Button>{user.name}</Button>
       </TableCell>
-      <TableCell align="right">{user.birthdate}</TableCell>
+      <TableCell align="right">{user.birthday}</TableCell>
       <TableCell align="right">{user.rfc}</TableCell>
       <TableCell>
         <IconButton>

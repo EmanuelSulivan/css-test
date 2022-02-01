@@ -1,15 +1,22 @@
 import { Dialog, DialogContent, Grid } from "@mui/material";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { User } from "../../interfaces/user.interfaces";
 import { UserFormItem } from "./UserFormItem";
 
-export const UserDialog = () => {
+interface Props {
+  open?: boolean;
+}
+
+export const UserDialog = ({ open = false }: Props) => {
   const [user, setUser] = useState<User>({
     name: "",
-    image: "",
+    lastName: "",
+    surName: "",
+    profilePicture: "",
     rfc: "",
-    birthdate: "",
+    birthday: "",
   });
+
   const onChangeUser = (e: ChangeEvent<{ name?: string; value: unknown }>) => {
     console.log(e.target.value);
     const { value, name } = e.target;
@@ -18,7 +25,7 @@ export const UserDialog = () => {
   };
 
   return (
-    <Dialog open onClose={() => {}} maxWidth="sm" fullWidth>
+    <Dialog open={open} onClose={() => {}} maxWidth="sm" fullWidth>
       <DialogContent>
         <form>
           <Grid container spacing={3}>

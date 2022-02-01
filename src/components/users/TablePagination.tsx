@@ -1,61 +1,80 @@
+import { ReactNode, useEffect, useState } from "react";
 import { Box } from "@mui/system";
 import { useTheme } from "@mui/material/styles";
-import { IconButton } from "@mui/material";
+import { IconButton, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import FirstPageIcon from "@mui/icons-material/FirstPage";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
+import { Links, Meta } from "../../interfaces/pagination.interfaces";
 
-interface TablePaginationActionsProps {
-  count: number;
-  page: number;
-  rowsPerPage: number;
-  onPageChange: (
-    event: React.MouseEvent<HTMLButtonElement>,
-    newPage: number
-  ) => void;
+interface Props {
+  links: Links;
+  pagination?: Meta;
+  handleLoadData: (path: string, params?: Object) => void;
 }
 
-export const TablePaginationActions = (props: TablePaginationActionsProps) => {
+export const TablePaginationActions = (props: Props) => {
+  const [perPage, setRowsPerPage] = useState(10);
+
+  const { links, handleLoadData, pagination } = props;
   const theme = useTheme();
-  const { count, page, rowsPerPage, onPageChange } = props;
 
-  const handleFirstPageButtonClick = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    onPageChange(event, 0);
+  const handleFirstPageButtonClick = () => {
+    handleLoadData(links.first, { perPage });
   };
 
-  const handleBackButtonClick = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    onPageChange(event, page - 1);
+  const handleBackButtonClick = () => {
+    if (links.prev) {
+      handleLoadData(links.prev, { perPage });
+    }
   };
 
-  const handleNextButtonClick = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    onPageChange(event, page + 1);
+  const handleNextButtonClick = () => {
+    if (links.next) {
+      handleLoadData(links.next, { perPage });
+    }
   };
 
-  const handleLastPageButtonClick = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+  const handleLastPageButtonClick = () => {
+    handleLoadData(links.last, { perPage });
   };
+
+  const handleChangeRowsPerPage = (
+    event: SelectChangeEvent<unknown>,
+    child: ReactNode
+  ) => {
+    setRowsPerPage(event.target.value as number);
+  };
+
+  useEffect(() => {
+    const path = `/user?page=${pagination?.current_page}`;
+    handleLoadData(path, { perPage });
+  }, [perPage]);
 
   return (
     <Box sx={{ flexShrink: 0, ml: 2.5 }}>
+      <Select
+        onChange={handleChangeRowsPerPage}
+        variant="outlined"
+        value={perPage}
+      >
+        {[5, 10, 15, 20].map((item) => (
+          <MenuItem value={item} key={`${item}-item`}>
+            {item}
+          </MenuItem>
+        ))}
+      </Select>
       <IconButton
         onClick={handleFirstPageButtonClick}
-        disabled={page === 0}
+        disabled={pagination?.total === 0}
         aria-label="first page"
       >
         {theme.direction === "rtl" ? <LastPageIcon /> : <FirstPageIcon />}
       </IconButton>
       <IconButton
         onClick={handleBackButtonClick}
-        disabled={page === 0}
+        disabled={!links.prev}
         aria-label="previous page"
       >
         {theme.direction === "rtl" ? (
@@ -66,7 +85,7 @@ export const TablePaginationActions = (props: TablePaginationActionsProps) => {
       </IconButton>
       <IconButton
         onClick={handleNextButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        disabled={!links.next}
         aria-label="next page"
       >
         {theme.direction === "rtl" ? (
@@ -77,7 +96,7 @@ export const TablePaginationActions = (props: TablePaginationActionsProps) => {
       </IconButton>
       <IconButton
         onClick={handleLastPageButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        disabled={pagination?.to === pagination?.total}
         aria-label="last page"
       >
         {theme.direction === "rtl" ? <FirstPageIcon /> : <LastPageIcon />}

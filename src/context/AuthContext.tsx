@@ -4,7 +4,7 @@ import {
   authReducer,
   AuthState,
   AUTH_INITIAL_STATE,
-} from "../reducers/AuthReducer";
+} from "../reducers/authReducer";
 import { AuthActionTypes } from "../types/auth.types";
 
 interface ContextProps extends UseAuthProps, AuthState {
