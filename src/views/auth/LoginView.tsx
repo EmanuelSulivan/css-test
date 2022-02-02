@@ -1,71 +1,73 @@
 import { useContext } from "react";
+import {
+  Button,
+  Grid,
+  LinearProgress,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { AuthContext } from "../../context/AuthContext";
+import { makeStyles } from "@mui/styles";
 
 export const LoginView = () => {
+  const classes = useStyles();
   const { loading, login } = useContext(AuthContext);
   return (
-    <div className="container h-100">
-      <div className="row h-100 d-flex justify-content-center">
-        <div className="col-11 col-lg-6 py-4 shadow-lg bg-body rounded my-auto px-4">
+    <div className={classes.container}>
+      <Grid container columns={12} justifyContent="center">
+        <Grid container item xs={11} md={8} lg={4}>
+          <Grid container item xs={11} justifyContent="center">
+            <Typography variant="h4" className={classes.title}>
+              Bienvenido
+            </Typography>
+          </Grid>
           <form onSubmit={login}>
-            <div className="container">
-              <div className="row">
-                <div className="col-12 my-2 text-center text-secondary">
-                  <p className="fs-2 text-center text-secondary">Bienvenido</p>
-                </div>
-                <div className="col-12">
-                  <div className="input-group mb-3">
-                    <span className="input-group-text" id="basic-addon1">
-                      <i className="fas fa-user"></i>
-                    </span>
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Username"
-                      aria-label="Username"
-                      aria-describedby="basic-addon1"
-                    />
-                  </div>
-                </div>
-                <div className="col-12">
-                  <div className="input-group mb-3">
-                    <span className="input-group-text" id="basic-addon1">
-                      <i className="fas fa-lock"></i>
-                    </span>
-                    <input
-                      type="password"
-                      className="form-control"
-                      placeholder="password"
-                      aria-label="Username"
-                      aria-describedby="basic-addon1"
-                    />
-                  </div>
-                </div>
-                <div className="d-grid gap-2">
-                  <button
-                    className="btn btn-primary"
-                    type="submit"
-                    disabled={loading}
-                  >
-                    {loading ? (
-                      <span
-                        className="spinner-border spinner-border-sm"
-                        role="status"
-                        aria-hidden="true"
-                      ></span>
-                    ) : (
-                      <span>Fake Login</span>
-                    )}
-                  </button>
-                </div>
-                <div className="col-12 my-2 text-center text-secondary">
-                  Haz click en "Fake Login" para continuar
-                </div>
-              </div>
-            </div>
+            <Grid
+              container
+              item
+              alignContent="center"
+              justifyContent="center"
+              justifyItems="center"
+              spacing={3}
+              sx={{ pb: 5 }}
+            >
+              <Grid item xs={11}>
+                <TextField label="Username" variant="standard" fullWidth />
+              </Grid>
+              <Grid item xs={11}>
+                <TextField
+                  label="Password"
+                  type="password"
+                  variant="standard"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={11}>
+                <Button type="submit" fullWidth>
+                  Fake login
+                </Button>
+                {loading && <LinearProgress color="primary" />}
+              </Grid>
+            </Grid>
           </form>
-        </div>
-      </div>
+        </Grid>
+      </Grid>
     </div>
   );
 };
+
+const useStyles = makeStyles((theme) => ({
+  container: {
+    height: "100%",
+    display: "flex",
+    alignContent: "center",
+    alignItems: "center",
+  },
+  title: {
+    fontSize: "2rem",
+    color: "	#D3D3D3",
+  },
+  imageContainer: {
+    backgroundColor: "#282c34",
+  },
+}));
