@@ -1,7 +1,7 @@
 import { Button, Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import { useContext, useEffect } from "react";
-import { Navbar } from "../../components/navbar/Navbar";
+import { DeleteUserDialog } from "../../components/users/DeleteUserDialog";
 import { UserDialog } from "../../components/users/UserDialog";
 import { UsersTable } from "../../components/users/UsersTable";
 import { UsersContext } from "../../context/UsersContext";
@@ -14,19 +14,17 @@ export const UsersView = () => {
   }, []);
 
   return (
-    <>
-      <Navbar />
-      <Box sx={{ m: 2 }}>
-        <Grid container spacing={2} columns={16}>
-          <Grid container item xs={16} justifyContent="flex-end">
-            <Button>Nuevo usuario</Button>
-          </Grid>
-          <Grid container item xs={16} justifyContent="flex-end">
-            <UsersTable />
-          </Grid>
+    <Box sx={{ pt: 2, pb: 5, px: 5 }}>
+      <Grid container spacing={2} columns={16} justifyContent="center">
+        <Grid container item xs={16} justifyContent="flex-end">
+          <Button>Nuevo usuario</Button>
         </Grid>
-      </Box>
+        <Grid container item xs={15} justifyContent="flex-end">
+          <UsersTable />
+        </Grid>
+      </Grid>
       <UserDialog />
-    </>
+      <DeleteUserDialog />
+    </Box>
   );
 };

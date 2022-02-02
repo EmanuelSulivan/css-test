@@ -6,9 +6,10 @@ import { User } from "../../interfaces/user.interfaces";
 
 interface Props {
   user: User;
+  handleOpenDeleteUser: (id: number) => void;
 }
 
-export const UserItem = ({ user }: Props) => {
+export const UserItem = ({ user, handleOpenDeleteUser }: Props) => {
   return (
     <TableRow key={`row-${user.id}`}>
       <TableCell>
@@ -22,15 +23,15 @@ export const UserItem = ({ user }: Props) => {
       </TableCell>
       <TableCell align="right">{user.birthday}</TableCell>
       <TableCell align="right">{user.rfc}</TableCell>
-      <TableCell>
+      <TableCell style={{ margin: 0, padding: 0 }}>
         <IconButton>
           <EditIcon />
         </IconButton>
-        <IconButton>
+        <IconButton onClick={() => handleOpenDeleteUser(user.id!)}>
           <ClearIcon />
         </IconButton>
       </TableCell>
-      <TableCell>
+      <TableCell style={{ margin: 0, padding: 0 }}>
         <IconButton>
           <FileUploadIcon />
         </IconButton>

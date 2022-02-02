@@ -1,11 +1,14 @@
 import { Dispatch } from "react";
 import { backendApi } from "../api/backendApi";
-import { UsersResponse } from "../interfaces/user.interfaces";
+import { UserResponse, UsersResponse } from "../interfaces/user.interfaces";
 import { UsersState } from "../reducers/userReducer";
 import { UserActionTypes } from "../types/users.types";
 
 export interface UseUserProps {
   getUsers: (path: string, params?: Object) => void;
+  deleteUser: (id: number) => void;
+  handleOpenDeleteUser: (id: number) => void;
+  handleCloseDeleteUser: () => void;
 }
 
 export const useUser = (
@@ -22,7 +25,33 @@ export const useUser = (
     }
   };
 
+  const deleteUser = async (id: number) => {
+    try {
+      dispatch({ type: "deleteUser" });
+      const response = await backendApi.delete<UserResponse>(`/user/${id}`);
+      dispatch({ type: "deleteUserSuccess", payload: response.data.data });
+    } catch (error) {
+      dispatch({ type: "httpError" });
+    }
+  };
+
+  const handleOpenDeleteUser = (id: number) => {
+    const payload = state.users.find((user) => user.id === id);
+
+    if (payload) {
+      dispatch({ type: "setUSer", payload });
+      dispatch({ type: "showDeleteUser", payload: true });
+    }
+  };
+
+  const handleCloseDeleteUser = () => {
+    dispatch({ type: "showDeleteUser", payload: false });
+  };
+
   return {
     getUsers,
+    deleteUser,
+    handleOpenDeleteUser,
+    handleCloseDeleteUser,
   };
 };

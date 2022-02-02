@@ -7,6 +7,8 @@ export interface UsersState {
   users: User[];
   links: Links;
   pagination: Meta;
+  user: User;
+  showDeleteUser: boolean;
 }
 
 export const USER_INITIAL_STATE: UsersState = {
@@ -28,6 +30,14 @@ export const USER_INITIAL_STATE: UsersState = {
     to: 0,
     total: 0,
   },
+  user: {
+    name: "",
+    lastName: "",
+    surName: "",
+    birthday: "",
+    rfc: "",
+  },
+  showDeleteUser: false,
 };
 
 export const userReducer = (
@@ -36,6 +46,7 @@ export const userReducer = (
 ): UsersState => {
   switch (action.type) {
     case "getUsers":
+    case "deleteUser":
       return {
         ...state,
         loading: true,
@@ -52,6 +63,28 @@ export const userReducer = (
       return {
         ...state,
         loading: false,
+      };
+    case "deleteUserSuccess":
+      return {
+        ...state,
+        loading: false,
+        users: state.users.filter((user) => user.id !== action.payload.id),
+        showDeleteUser: false,
+        pagination: {
+          ...state.pagination,
+          to: state.pagination.to - 1,
+          total: state.pagination.total - 1,
+        },
+      };
+    case "showDeleteUser":
+      return {
+        ...state,
+        showDeleteUser: action.payload,
+      };
+    case "setUSer":
+      return {
+        ...state,
+        user: action.payload,
       };
     default:
       return state;
