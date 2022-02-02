@@ -1,19 +1,36 @@
-import { Avatar, Button, IconButton, TableCell, TableRow } from "@mui/material";
+import {
+  Avatar,
+  Badge,
+  Button,
+  IconButton,
+  TableCell,
+  TableRow,
+} from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 import EditIcon from "@mui/icons-material/Edit";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { User } from "../../interfaces/user.interfaces";
+import { imagesURL } from "../../api/backendApi";
+import { UserBadge } from "./UserBadge";
 
 interface Props {
   user: User;
   handleOpenDeleteUser: (id: number) => void;
+  handleShowUpdateUser: (id: number) => void;
 }
 
-export const UserItem = ({ user, handleOpenDeleteUser }: Props) => {
+export const UserItem = ({
+  user,
+  handleOpenDeleteUser,
+  handleShowUpdateUser,
+}: Props) => {
+  const imagePath = user.profilePicture
+    ? `${imagesURL}/${user.profilePicture}`
+    : "https://i.pinimg.com/280x280_RS/2e/45/66/2e4566fd829bcf9eb11ccdb5f252b02f.jpg";
   return (
     <TableRow key={`row-${user.id}`}>
       <TableCell>
-        <Avatar src="https://i.pinimg.com/280x280_RS/2e/45/66/2e4566fd829bcf9eb11ccdb5f252b02f.jpg" />
+        <UserBadge imagePath={imagePath} />
       </TableCell>
       <TableCell component="th" scope="row">
         {user.profilePicture}
@@ -24,7 +41,7 @@ export const UserItem = ({ user, handleOpenDeleteUser }: Props) => {
       <TableCell align="right">{user.birthday}</TableCell>
       <TableCell align="right">{user.rfc}</TableCell>
       <TableCell style={{ margin: 0, padding: 0 }}>
-        <IconButton>
+        <IconButton onClick={() => handleShowUpdateUser(user.id!)}>
           <EditIcon />
         </IconButton>
         <IconButton onClick={() => handleOpenDeleteUser(user.id!)}>

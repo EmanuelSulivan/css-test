@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import {
   Table,
   TableBody,
@@ -23,8 +23,14 @@ const headers: string[] = [
 ];
 
 export const UsersTable = () => {
-  const { users, links, pagination, getUsers, handleOpenDeleteUser } =
-    useContext(UsersContext);
+  const {
+    users,
+    links,
+    pagination,
+    getUsers,
+    handleOpenDeleteUser,
+    handleShowUpdateUser,
+  } = useContext(UsersContext);
   const classes = useStyles();
   return (
     <TableContainer>
@@ -41,6 +47,7 @@ export const UsersTable = () => {
             <UserItem
               user={user}
               handleOpenDeleteUser={handleOpenDeleteUser}
+              handleShowUpdateUser={handleShowUpdateUser}
               key={`user-${user.rfc}`}
             />
           ))}

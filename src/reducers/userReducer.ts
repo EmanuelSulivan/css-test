@@ -9,6 +9,7 @@ export interface UsersState {
   pagination: Meta;
   user: User;
   showDeleteUser: boolean;
+  showUserDialog: boolean;
 }
 
 export const USER_INITIAL_STATE: UsersState = {
@@ -38,6 +39,7 @@ export const USER_INITIAL_STATE: UsersState = {
     rfc: "",
   },
   showDeleteUser: false,
+  showUserDialog: false,
 };
 
 export const userReducer = (
@@ -47,6 +49,7 @@ export const userReducer = (
   switch (action.type) {
     case "getUsers":
     case "deleteUser":
+    case "saveUser":
       return {
         ...state,
         loading: true,
@@ -85,6 +88,34 @@ export const userReducer = (
       return {
         ...state,
         user: action.payload,
+      };
+    case "showUserDialog":
+      return {
+        ...state,
+        showUserDialog: action.payload,
+      };
+    case "saveUserSuccess":
+      return {
+        ...state,
+        users: [action.payload, ...state.users],
+        user: { ...USER_INITIAL_STATE.user },
+        showUserDialog: false,
+        loading: false,
+        pagination: {
+          ...state.pagination,
+          to: state.pagination.to + 1,
+          total: state.pagination.total + 1,
+        },
+      };
+    case "updateUserSuccess":
+      return {
+        ...state,
+        loading: false,
+        showUserDialog: false,
+        user: { ...USER_INITIAL_STATE.user },
+        users: state.users.map((user) =>
+          user.id === action.payload.id ? action.payload : user
+        ),
       };
     default:
       return state;

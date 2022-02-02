@@ -1,5 +1,4 @@
 import { Button } from "@mui/material";
-import { type } from "os";
 
 type ButtonColor =
   | "inherit"
@@ -13,19 +12,28 @@ type ButtonColor =
 
 interface Props {
   label: string;
-  onClick: () => void;
+  onClick?: () => void;
   disabled?: boolean;
   fullWidth?: boolean;
   color?: ButtonColor;
+  type?: "button" | "submit";
 }
 export const ActionButton = (props: Props) => {
-  const { label, onClick, disabled, fullWidth, color = "inherit" } = props;
+  const {
+    label,
+    onClick,
+    disabled,
+    fullWidth,
+    color = "inherit",
+    type = "button",
+  } = props;
   return (
     <Button
       onClick={onClick}
       disabled={disabled}
       fullWidth={fullWidth}
       color={color}
+      type={type}
     >
       {label}
     </Button>
