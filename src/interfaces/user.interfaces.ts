@@ -14,6 +14,7 @@ export interface User {
   rfc: string;
   birthday: string;
   profilePicture?: string;
+  profilePicturePath?: string;
   email?: string;
   deleted_at?: string;
   created_at?: string;

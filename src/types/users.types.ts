@@ -11,4 +11,6 @@ export type UserActionTypes =
   | { type: "setUSer"; payload: User }
   | { type: "showDeleteUser"; payload: boolean }
   | { type: "showUserDialog"; payload: boolean }
+  | { type: "showImageDialog"; payload: boolean }
+  | { type: "setImage"; payload: string | Blob | ArrayBuffer | undefined }
   | { type: "httpError" };

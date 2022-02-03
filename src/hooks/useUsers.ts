@@ -14,6 +14,10 @@ export interface UseUserProps {
   onChangeUser: (e: ChangeEvent<{ name?: string; value: unknown }>) => void;
   saveUser: (e: FormEvent<HTMLFormElement>) => void;
   handleShowUpdateUser: (id: number) => void;
+  hanbleOpenImageModal: (id: number) => void;
+  handleCloseImgeModal: () => void;
+  handleUpload: (e: ChangeEvent<HTMLInputElement>) => void;
+  saveImage: () => void;
 }
 
 export const useUser = (
@@ -87,7 +91,6 @@ export const useUser = (
       }
     } catch (error) {
       dispatch({ type: "httpError" });
-      console.log(error);
     }
   };
 
@@ -96,6 +99,49 @@ export const useUser = (
     if (payload) {
       dispatch({ type: "setUSer", payload });
       dispatch({ type: "showUserDialog", payload: true });
+    }
+  };
+
+  const hanbleOpenImageModal = (id: number) => {
+    const payload = state.users.find((user) => user.id === id);
+    if (payload) {
+      dispatch({ type: "setUSer", payload });
+      dispatch({ type: "showImageDialog", payload: true });
+    }
+  };
+
+  const handleCloseImgeModal = () => {
+    dispatch({ type: "showImageDialog", payload: false });
+  };
+
+  const handleUpload = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = (e) => {
+        if (e.target?.result) {
+          dispatch({ type: "setImage", payload: e.target?.result });
+        }
+      };
+    }
+  };
+
+  const saveImage = async () => {
+    try {
+      const formData = new FormData();
+
+      if (state.user.id) {
+        formData.append("userId", `${state.user.id}`);
+        formData.append("image", state.image as Blob);
+        const response = await backendApi.post<UserResponse>(
+          "/photo",
+          formData
+        );
+        console.log(response);
+      }
+    } catch (error) {
+      dispatch({ type: "httpError" });
     }
   };
 
@@ -109,5 +155,9 @@ export const useUser = (
     onChangeUser,
     saveUser,
     handleShowUpdateUser,
+    hanbleOpenImageModal,
+    handleCloseImgeModal,
+    handleUpload,
+    saveImage,
   };
 };

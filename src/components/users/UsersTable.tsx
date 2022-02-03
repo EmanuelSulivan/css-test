@@ -30,6 +30,7 @@ export const UsersTable = () => {
     getUsers,
     handleOpenDeleteUser,
     handleShowUpdateUser,
+    hanbleOpenImageModal,
   } = useContext(UsersContext);
   const classes = useStyles();
   return (
@@ -48,6 +49,7 @@ export const UsersTable = () => {
               user={user}
               handleOpenDeleteUser={handleOpenDeleteUser}
               handleShowUpdateUser={handleShowUpdateUser}
+              hanbleOpenImageModal={hanbleOpenImageModal}
               key={`user-${user.rfc}`}
             />
           ))}

@@ -3,15 +3,16 @@ import CameraAltIcon from "@mui/icons-material/CameraAlt";
 
 interface Props {
   imagePath: string;
+  onClick: () => void;
 }
 
-export const UserBadge = ({ imagePath }: Props) => {
+export const UserBadge = ({ imagePath, onClick }: Props) => {
   return (
     <Badge
       overlap="circular"
       anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
       badgeContent={
-        <IconButton size="small">
+        <IconButton size="small" onClick={onClick}>
           <CameraAltIcon />
         </IconButton>
       }

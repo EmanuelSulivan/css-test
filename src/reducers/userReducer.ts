@@ -10,6 +10,8 @@ export interface UsersState {
   user: User;
   showDeleteUser: boolean;
   showUserDialog: boolean;
+  showImageDialog: boolean;
+  image: string | Blob | ArrayBuffer | undefined;
 }
 
 export const USER_INITIAL_STATE: UsersState = {
@@ -40,6 +42,8 @@ export const USER_INITIAL_STATE: UsersState = {
   },
   showDeleteUser: false,
   showUserDialog: false,
+  showImageDialog: false,
+  image: "",
 };
 
 export const userReducer = (
@@ -116,6 +120,16 @@ export const userReducer = (
         users: state.users.map((user) =>
           user.id === action.payload.id ? action.payload : user
         ),
+      };
+    case "showImageDialog":
+      return {
+        ...state,
+        showImageDialog: action.payload,
+      };
+    case "setImage":
+      return {
+        ...state,
+        image: action.payload,
       };
     default:
       return state;
